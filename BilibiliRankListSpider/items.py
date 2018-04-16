@@ -12,6 +12,6 @@ class BilibiliranklistspiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = scrapy.Field()
-    link = scrapy.Field()
-    desc = scrapy.Field()
-    rank = scrapy.Field()
+    author = scrapy.Field()
+    view = scrapy.Field()
+    pts = scrapy.Field()

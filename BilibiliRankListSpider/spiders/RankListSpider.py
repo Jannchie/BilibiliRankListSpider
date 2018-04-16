@@ -15,12 +15,19 @@ class DmozSpider(scrapy.spiders.Spider):
         titleSelector = response.xpath("//a[@class='title']")
         title = titleSelector.xpath("text()").extract()
 
-        authorSelector = response.xpath("//div[@class='content']//span[@class='data-box'][1]//i[@class='b-icon author']/parent::node()")
+        authorSelector = response.xpath("//div[@class='content']//span[@class='data-box']//i[@class='b-icon author']/parent::node()")
         author = authorSelector.xpath("text()").extract()
-        print(title,author)
-        # for sel in response.xpath('//ul/li'):
-        #     item = BilibiliranklistspiderItem()
-        #     item['title'] = sel.xpath('a/text()').extract()
-        #     item['link'] = sel.xpath('a/@href').extract()
-        #     item['desc'] = sel.xpath('text()').extract()
-        #     yield item
+
+        viewSelector = response.xpath("//div[@class='content']//span[@class='data-box']//i[@class='b-icon view']/parent::node()")
+        view = viewSelector.xpath("text()").extract()
+
+        ptsSelector = response.xpath("//div[@class='pts']/div")
+        pts = ptsSelector.xpath("text()").extract()
+
+        for each in zip(title,author,view,pts):
+            item = BilibiliranklistspiderItem()
+            item['title'] = each[0]
+            item['author'] = each[1]
+            item['view'] = each[2]
+            item['pts'] = each[3]
+            yield item
