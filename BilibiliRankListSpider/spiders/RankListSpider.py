@@ -1,5 +1,6 @@
 import scrapy
 from BilibiliRankListSpider.items import BilibiliranklistspiderItem
+import time
 
 class DmozSpider(scrapy.spiders.Spider):
     name = "rankListSpider"
@@ -8,8 +9,9 @@ class DmozSpider(scrapy.spiders.Spider):
         "https://www.bilibili.com/ranking/all/0/0/30/"
     ]
     def parse(self, response):
-        filename = response.url.split("/")[-2]
-        with open(filename, 'wb') as f:
+
+        filename = time.strftime("%Y-%m-%d")
+        with open('./temp/' + filename, 'wb') as f:
             f.write(response.body)
 
         titleSelector = response.xpath("//a[@class='title']")
