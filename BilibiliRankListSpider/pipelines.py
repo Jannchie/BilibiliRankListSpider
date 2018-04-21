@@ -31,23 +31,28 @@ class BilibiliranklistspiderPipeline(object):
 
     def process_item(self, item, spider):
 
-        if item['fans'][-1]=='万':
-            item['fans']=float(item['fans'][:-1])*10
+        if item['fans'][-1] == '万':
+            item['fans'] = float(item['fans'][:-1]) * 10
         else:
-            item['fans']=float(item['fans'][:-1])/1000
+            item['fans'] = float(item['fans'][:-1]) / 1000
 
-        if item['view'][-1]=='万':
-            item['view']=float(item['view'][:-1])*10
+        if item['barrage'][-1] == '万':
+            item['barrage'] = float(item['barrage'][:-1]) * 10
         else:
-            item['view']=float(item['view'][:-1])/1000
+            item['barrage'] = float(item['barrage'][:-1]) / 1000
+
+        if item['play'][-1] == '万':
+            item['play'] = float(item['play'][:-1]) * 10
+        else:
+            item['play'] = float(item['play'][:-1]) / 1000
 
         try:
             # 插入数据
             self.cursor.execute(
-                """insert into bilibili_rank_list(title, author, bilibili_rank_list.view, pts ,href, bilibili_rank_list.partition,bilibili_rank_list.subPartition,author_fans,author_submissions)value (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (item['title'], item['author'], item['view'], item['pts'],
-                 item['href'], item['partition'], item['subPartition'],
-                 item['fans'], item['submissions']))
+                """insert into bilibili_rank_list(title, author, bilibili_rank_list.barrage,play, pts ,href, bilibili_rank_list.partition,bilibili_rank_list.subPartition,author_fans,author_submissions)value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (item['title'], item['author'], item['barrage'], item['play'],
+                 item['pts'], item['href'], item['partition'],
+                 item['subPartition'], item['fans'], item['submissions']))
             # 提交sql语句
             self.connect.commit()
         except Exception as error:
