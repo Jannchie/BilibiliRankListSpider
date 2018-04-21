@@ -1,3 +1,4 @@
+#coding=utf-8 
 import scrapy
 from scrapy.http import Request
 from BilibiliRankListSpider.items import BilibiliranklistspiderItem
