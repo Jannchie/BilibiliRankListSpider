@@ -1,8 +1,9 @@
 import scrapy
+from scrapy.http import Request
 from BilibiliRankListSpider.items import BilibiliranklistspiderItem
 import time
 
-class DmozSpider(scrapy.spiders.Spider):
+class RankListSpider(scrapy.spiders.Spider):
     name = "rankListSpider"
     allowed_domains = ["bilibili.com"]
     start_urls = [
@@ -32,4 +33,14 @@ class DmozSpider(scrapy.spiders.Spider):
             item['view'] = view[i]
             item['pts'] = pts[i]
             item['href'] = href[i]
-            yield item
+
+            # 为了爬取分区、粉丝数等数据，需要进入每一个视频的详情页面进行抓取
+            yield Request("https://"+href[i][2:],meta={'item':item},callback=self.detailParse)
+
+    def detailParse(self, response):
+        item = response.meta['item']
+        item['partition'] = response.xpath("/html/body/div[2]/div/div[4]/div[1]/div[1]/span[2]/a/text()").extract()[0]
+        item['subPartition'] = response.xpath("/html/body/div[2]/div/div[4]/div[1]/div[1]/span[3]/a/text()").extract()[0]
+        item['fans'] = response.xpath("/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[2]/text()").extract()[0][3:]
+        item['submissions'] = response.xpath("/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[1]/text()").extract()[0][3:]
+        yield item

@@ -16,3 +16,7 @@ class BilibiliranklistspiderItem(scrapy.Item):
     view = scrapy.Field()
     pts = scrapy.Field()
     href = scrapy.Field()
+    partition = scrapy.Field()
+    subPartition = scrapy.Field()
+    fans = scrapy.Field()
+    submissions = scrapy.Field()
