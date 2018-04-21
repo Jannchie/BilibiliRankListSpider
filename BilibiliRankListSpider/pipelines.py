@@ -7,7 +7,7 @@
 
 import json
 import time
-import MySQLdb
+import pymysql
 # 自己创建的database配置文件，其中包含数据库链接信息。
 import logging
 import configparser
@@ -20,7 +20,7 @@ class BilibiliranklistspiderPipeline(object):
         # 连接数据库
         cf = configparser.ConfigParser()
         cf.read("db.conf")
-        self.connect = MySQLdb.connect(
+        self.connect = pymysql.connect(
             host=cf.get('MYSQL', 'HOST'),
             db=cf.get('MYSQL', 'DBNAME'),
             user=cf.get('MYSQL', 'USER'),
@@ -31,20 +31,20 @@ class BilibiliranklistspiderPipeline(object):
 
     def process_item(self, item, spider):
 
-        if item['fans'][-1] == '万':
+        if item['fans'][-1] == u'万':
             item['fans'] = float(item['fans'][:-1]) * 10
         else:
-            item['fans'] = float(item['fans'][:-1]) / 1000
+            item['fans'] = float(item['fans']) / 1000
 
-        if item['barrage'][-1] == '万':
+        if item['barrage'][-1] == u'万':
             item['barrage'] = float(item['barrage'][:-1]) * 10
         else:
-            item['barrage'] = float(item['barrage'][:-1]) / 1000
-
-        if item['play'][-1] == '万':
+            item['barrage'] = float(item['barrage']) / 1000
+       
+        if item['play'][-1] == u'万':
             item['play'] = float(item['play'][:-1]) * 10
         else:
-            item['play'] = float(item['play'][:-1]) / 1000
+            item['play'] = float(item['play']) / 1000
 
         try:
             # 插入数据
