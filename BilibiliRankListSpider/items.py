@@ -15,3 +15,4 @@ class BilibiliranklistspiderItem(scrapy.Item):
     author = scrapy.Field()
     view = scrapy.Field()
     pts = scrapy.Field()
+    href = scrapy.Field()

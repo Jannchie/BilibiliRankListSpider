@@ -14,8 +14,5 @@ import time
 class BilibiliranklistspiderPipeline(object):
 
     def process_item(self, item, spider):
-        t = time.strftime("%Y-%m-%d")
-        with open(t + '.json', 'a') as f:
-            json.dump(dict(item), f)
-            f.write(',\n')
+
         return item

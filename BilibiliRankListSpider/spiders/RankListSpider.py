@@ -10,26 +10,26 @@ class DmozSpider(scrapy.spiders.Spider):
     ]
     def parse(self, response):
 
+        # 文件名设为当日日期
         filename = time.strftime("%Y-%m-%d")
         with open('./temp/' + filename, 'wb') as f:
             f.write(response.body)
 
-        titleSelector = response.xpath("//a[@class='title']")
-        title = titleSelector.xpath("text()").extract()
+        selector = response.xpath("//div[@class='content']")
+        ITEM_NUMBER = len(selector)
 
-        authorSelector = response.xpath("//div[@class='content']//span[@class='data-box']//i[@class='b-icon author']/parent::node()")
-        author = authorSelector.xpath("text()").extract()
+        title = selector.xpath("//a[@class='title']/text()").extract()
+        author = selector.xpath("//span[@class='data-box']//i[@class='b-icon author']/parent::node()/text()").extract()
+        view = selector.xpath("//span[@class='data-box']//i[@class='b-icon view']/parent::node()/text()").extract()
+        pts = selector.xpath("//div[@class='pts']/div/text()").extract()
+        href = selector.xpath("//a[@class='title']/@href").extract()
 
-        viewSelector = response.xpath("//div[@class='content']//span[@class='data-box']//i[@class='b-icon view']/parent::node()")
-        view = viewSelector.xpath("text()").extract()
-
-        ptsSelector = response.xpath("//div[@class='pts']/div")
-        pts = ptsSelector.xpath("text()").extract()
-
-        for each in zip(title,author,view,pts):
+        # 数据装箱
+        for i in range(0,ITEM_NUMBER):
             item = BilibiliranklistspiderItem()
-            item['title'] = each[0]
-            item['author'] = each[1]
-            item['view'] = each[2]
-            item['pts'] = each[3]
+            item['title'] = title[i]
+            item['author'] = author[i]
+            item['view'] = view[i]
+            item['pts'] = pts[i]
+            item['href'] = href[i]
             yield item
