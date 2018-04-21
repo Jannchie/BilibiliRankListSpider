@@ -13,3 +13,4 @@ build
 
 # log:
 *.out
+temp/*
