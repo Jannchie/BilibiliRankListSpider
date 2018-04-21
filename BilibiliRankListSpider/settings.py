@@ -14,7 +14,6 @@ BOT_NAME = 'BilibiliRankListSpider'
 SPIDER_MODULES = ['BilibiliRankListSpider.spiders']
 NEWSPIDER_MODULE = 'BilibiliRankListSpider.spiders'
 
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'BilibiliRankListSpider (+http://www.yourdomain.com)'
 
@@ -64,9 +63,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#     'BilibiliRankListSpider.pipelines.BilibiliranklistspiderPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    'BilibiliRankListSpider.pipelines.BilibiliranklistspiderPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
