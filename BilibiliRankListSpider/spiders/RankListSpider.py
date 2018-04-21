@@ -21,16 +21,18 @@ class RankListSpider(scrapy.spiders.Spider):
 
         title = selector.xpath("//a[@class='title']/text()").extract()
         author = selector.xpath("//span[@class='data-box']//i[@class='b-icon author']/parent::node()/text()").extract()
-        view = selector.xpath("//span[@class='data-box']//i[@class='b-icon view']/parent::node()/text()").extract()
+        barrage = selector.xpath("//span[@class='data-box']//i[@class='b-icon view']/parent::node()/text()").extract()
         pts = selector.xpath("//div[@class='pts']/div/text()").extract()
         href = selector.xpath("//a[@class='title']/@href").extract()
-
+        play = selector.xpath("//span[@class='data-box']//i[@class='b-icon play']/parent::node()/text()").extract()
+        
         # 数据装箱
         for i in range(0,ITEM_NUMBER):
             item = BilibiliranklistspiderItem()
             item['title'] = title[i]
             item['author'] = author[i]
-            item['view'] = view[i]
+            item['barrage'] = barrage[i]
+            item['play'] = play[i]
             item['pts'] = pts[i]
             item['href'] = href[i]
 
