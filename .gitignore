@@ -1,1 +1,16 @@
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python:
 *.pyc
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# log:
+*.out
+>>>>>>> 1a1a6c24811290a1329754174c33eed5f94e5ad5
