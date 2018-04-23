@@ -17,3 +17,5 @@ temp/*
 
 # database
 db.conf
+.vscode/.ropeproject/config.py
+.vscode/.ropeproject/objectdb

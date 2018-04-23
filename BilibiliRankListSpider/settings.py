@@ -65,6 +65,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'BilibiliRankListSpider.pipelines.BilibiliranklistspiderPipeline': 300,
+    'BilibiliRankListSpider.pipelines.DailyRankListPipeLine': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
