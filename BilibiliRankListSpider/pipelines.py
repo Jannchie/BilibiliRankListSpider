@@ -21,15 +21,6 @@ def unit_convert(item):
         item['fans'] = float(item['fans'][:-1]) * 10
     else:
         item['fans'] = float(item['fans']) / 1000
-    if item['barrage'][-1] == u'万':
-        item['barrage'] = float(item['barrage'][:-1]) * 10
-    else:
-        item['barrage'] = float(item['barrage']) / 1000
-    if item['play'][-1] == u'万':
-        item['play'] = float(item['play'][:-1]) * 10
-    else:
-        item['play'] = float(item['play']) / 1000
-
 
 def connect_db():
 
@@ -83,13 +74,30 @@ class DailyRankListPipeLine(object):
         try:
             # 插入数据
             self.cursor.execute(
-                """insert into bilibili_rank_list_daily(title, author, bilibili_rank_list_daily.barrage,play, pts ,href, bilibili_rank_list_daily.partition,bilibili_rank_list_daily.subPartition,author_fans,author_submissions)value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                """insert into bilibili_rank_list_daily(
+                    title,
+                    author, 
+                    bilibili_rank_list_daily.barrage,
+                    play, 
+                    pts,
+                    href, 
+                    bilibili_rank_list_daily.partition,
+                    bilibili_rank_list_daily.subPartition,
+                    author_fans,
+                    author_submissions,
+                    aid,
+                    favorite,
+                    share,
+                    coin)
+                    value 
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                 (item['title'], item['author'], item['barrage'], item['play'],
                  item['pts'], item['href'], item['partition'],
-                 item['subPartition'], item['fans'], item['submissions']))
+                 item['subPartition'], item['fans'], item['submissions'], 
+                 item['aid'],item['favorite'],item['share'],item['coin']))
             # 提交sql语句
             self.connect.commit()
         except Exception as error:
             # 出现错误时打印错误日志
             logging.error(error)
-        return item
+        return item        

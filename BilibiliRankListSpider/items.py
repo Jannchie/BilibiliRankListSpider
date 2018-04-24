@@ -21,3 +21,7 @@ class BilibiliranklistspiderItem(scrapy.Item):
     subPartition = scrapy.Field()
     fans = scrapy.Field()
     submissions = scrapy.Field()
+    aid = scrapy.Field()
+    favorite = scrapy.Field()
+    share = scrapy.Field()
+    coin = scrapy.Field()

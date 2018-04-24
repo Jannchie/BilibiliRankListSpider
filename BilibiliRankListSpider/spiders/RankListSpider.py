@@ -43,7 +43,7 @@ class RankListSpider(scrapy.spiders.Spider):
             item['href'] = href[i]
 
             # 为了爬取分区、粉丝数等数据，需要进入每一个视频的详情页面进行抓取
-            yield Request("https://"+href[i][2:],meta={'item':item},callback=self.detailParse)
+            yield Request("https:"+href[i],meta={'item':item},callback=self.detailParse)
 
     def detailParse(self, response):
         item = response.meta['item']
