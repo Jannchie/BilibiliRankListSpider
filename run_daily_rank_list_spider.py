@@ -1,5 +1,5 @@
 import time
-
+import os
 def crawl_work():
     command = 'scrapy crawl rankListDailySpider -o ' + './data/' + time.strftime("%Y-%m-%d") + '.json'
     os.system(command)
