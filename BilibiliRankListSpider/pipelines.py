@@ -16,11 +16,6 @@ import logging
 
 # 单位换算，化为K（千）。
 def unit_convert(item):
-
-    if item['fans'][-1] == u'万':
-        item['fans'] = float(item['fans'][:-1]) * 10
-    else:
-        item['fans'] = float(item['fans']) / 1000
     if item['barrage'][-1] == u'万':
         item['barrage'] = float(item['barrage'][:-1]) * 10
     else:

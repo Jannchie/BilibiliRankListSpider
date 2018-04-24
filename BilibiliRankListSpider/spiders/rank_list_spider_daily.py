@@ -26,11 +26,17 @@ class RankListSpiderDaily(scrapy.spiders.Spider):
         ITEM_NUMBER = len(selector)
 
         title = selector.xpath("//a[@class='title']/text()").extract()
-        author = selector.xpath("//span[@class='data-box']//i[@class='b-icon author']/parent::node()/text()").extract()
-        barrage = selector.xpath("//span[@class='data-box']//i[@class='b-icon view']/parent::node()/text()").extract()
+        author = selector.xpath(
+            "//span[@class='data-box']//i[@class='b-icon author']/parent::node()/text()"
+        ).extract()
+        barrage = selector.xpath(
+            "//span[@class='data-box']//i[@class='b-icon view']/parent::node()/text()"
+        ).extract()
         pts = selector.xpath("//div[@class='pts']/div/text()").extract()
         href = selector.xpath("//a[@class='title']/@href").extract()
-        play = selector.xpath("//span[@class='data-box']//i[@class='b-icon play']/parent::node()/text()").extract()
+        play = selector.xpath(
+            "//span[@class='data-box']//i[@class='b-icon play']/parent::node()/text()"
+        ).extract()
 
         # 数据装箱
         for i in range(0, ITEM_NUMBER):
@@ -57,7 +63,7 @@ class RankListSpiderDaily(scrapy.spiders.Spider):
             "/html/body/div[2]/div/div[4]/div[1]/div[1]/span[3]/a/text()"
         ).extract()[0]
         item['fans'] = response.xpath(
-            "/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[2]/text()"
+            "/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[2]/@title"
         ).extract()[0][3:]
         item['submissions'] = response.xpath(
             "/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[1]/text()"

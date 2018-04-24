@@ -26,3 +26,7 @@ class UserItem(scrapy.Item):
     mid = scrapy.Field()
     name = scrapy.Field()
     sex = scrapy.Field()
+
+class VideoItem(scrapy.Item):
+    aid = scrapy.Field()
+    view = scrapy.Field()
