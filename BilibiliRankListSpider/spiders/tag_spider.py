@@ -12,12 +12,13 @@ class TagSpider(scrapy.spiders.Spider):
 
     start_urls = [
     ]
-    start_urls.append("https://www.bilibili.com/video/av6689")
-        
+    # 23000000 max
+    for i in range(58690, 100000):
+        start_urls.append("https://www.bilibili.com/video/av" + str(i))
     
 
-    custom_settings = {'ITEM_PIPELINES': {'BilibiliRankListSpider.pipelines.TagPipeLine': 300}}
-
+    custom_settings = {'ITEM_PIPELINES': {}}
+    #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def parse(self, response):
 
         tagName = response.xpath("//li[@class='tag']/a/text()").extract()
@@ -31,8 +32,3 @@ class TagSpider(scrapy.spiders.Spider):
                 item['tagName'] = tagName[i]
                 item['datetime'] = datetime
                 yield item
-                
-        for i in range(6689, 23000000):
-            yield Request(
-                "https://www.bilibili.com/video/av" + str(i),
-                callback=self.parse)
