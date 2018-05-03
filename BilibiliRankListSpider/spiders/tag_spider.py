@@ -12,8 +12,8 @@ class TagSpider(scrapy.spiders.Spider):
 
     start_urls = [
     ]
-    for i in range(6689, 23000000):
-        start_urls.append("https://www.bilibili.com/video/av" + str(i))
+    start_urls.append("https://www.bilibili.com/video/av6689")
+        
     
 
     custom_settings = {'ITEM_PIPELINES': {'BilibiliRankListSpider.pipelines.TagPipeLine': 300}}
@@ -31,3 +31,8 @@ class TagSpider(scrapy.spiders.Spider):
                 item['tagName'] = tagName[i]
                 item['datetime'] = datetime
                 yield item
+                
+        for i in range(6689, 23000000):
+            yield Request(
+                "https://www.bilibili.com/video/av" + str(i),
+                callback=self.parse)
