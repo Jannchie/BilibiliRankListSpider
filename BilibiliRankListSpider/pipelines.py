@@ -110,3 +110,23 @@ class BangumiPipeLine(object):
             # 出现错误时打印错误日志
             logging.error(error)
         return item
+
+class TagPipeLine(object):
+    def __init__(self):
+
+        # 连接数据库
+        self.connect = connect_db()
+        self.cursor = self.connect.cursor()
+
+    def process_item(self, item, spider):
+        try:
+            # 插入数据
+            self.cursor.execute(
+                """insert into tag(tag_name,`datetime`)value (%s,%s)""",
+                (item['tagName'], item['datetime']))
+            # 提交sql语句
+            self.connect.commit()
+        except Exception as error:
+            # 出现错误时打印错误日志
+            logging.error(error)
+        return item

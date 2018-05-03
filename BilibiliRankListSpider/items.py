@@ -30,3 +30,7 @@ class UserItem(scrapy.Item):
 class VideoItem(scrapy.Item):
     aid = scrapy.Field()
     view = scrapy.Field()
+
+class BiliTagItem(scrapy.Item):
+    tagName = scrapy.Field()
+    datetime = scrapy.Field()
