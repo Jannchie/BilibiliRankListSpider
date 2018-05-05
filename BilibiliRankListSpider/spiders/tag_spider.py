@@ -13,11 +13,11 @@ class TagSpider(scrapy.spiders.Spider):
     start_urls = [
     ]
     # 23000000 max
-    for i in range(58690, 100000):
+    for i in range(4000000, 6000000):
         start_urls.append("https://www.bilibili.com/video/av" + str(i))
     
 
-    custom_settings = {'ITEM_PIPELINES': {}}
+    custom_settings = {'ITEM_PIPELINES': {'BilibiliRankListSpider.pipelines.TagPipeLine': 300}}
     #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def parse(self, response):
 

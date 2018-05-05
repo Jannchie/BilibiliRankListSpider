@@ -58,15 +58,12 @@ class RankListSpider(scrapy.spiders.Spider):
     def detailParse(self, response):
         item = response.meta['item']
         item['partition'] = response.xpath(
-            "/html/body/div[2]/div/div[4]/div[1]/div[1]/span[2]/a/text()"
-        ).extract()[0]
+            "//span[@class='crumb'][2]/a/text()").extract()[0]
         item['subPartition'] = response.xpath(
-            "/html/body/div[2]/div/div[4]/div[1]/div[1]/span[3]/a/text()"
-        ).extract()[0]
-        item['fans'] = response.xpath(
-            "/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[2]/@title"
-        ).extract()[0][3:]
+            "//span[@class='crumb'][3]/a/text()").extract()[0]
+        item['fans'] = response.xpath("//div[3]/span[2]/@title").extract()[0][
+            3:]
         item['submissions'] = response.xpath(
-            "/html/body/div[2]/div/div[4]/div[2]/div[2]/div[3]/span[1]/text()"
-        ).extract()[0][3:]
+            "//div[3]/span[1]/text()").extract()[0][3:]
         yield item
+
