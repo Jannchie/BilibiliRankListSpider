@@ -6,26 +6,30 @@ import time
 import json
 
 
-class UserSpider(scrapy.spiders.Spider):
-    name = "userSpider"
+class TagSpider(scrapy.spiders.Spider):
+    name = "tagSpider"
     allowed_domains = ["bilibili.com"]
-    start_urls = ["https://api.bilibili.com/x/web-interface/card?mid=1"]
+
+    start_urls = [
+    ]
+    # 23000000 max
+    i = (x+1 for x in range(90000000))
+    
+    start_urls.append("https://space.bilibili.com/"+str(next(i))+"/#/video")
+    
     custom_settings = {'ITEM_PIPELINES': {}}
-
+    #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def parse(self, response):
-        data = json.loads(response.body)['data']
-
+        for each in range(2):
+            yield Request()
+        tagName = response.xpath("//li[@class='tag']/a/text()").extract()
+        if tagName != []:
+            ITEM_NUMBER = len(tagName)
+            datetime = response.xpath("//time/text()").extract()[0]
+            
         # 数据装箱
-        item = UserItem()
-        item['name'] = data['card']['name']
-        item['mid'] = data['card']['mid']
-        print(item['name'])
-        print(item['mid'])
-        if item['mid'] != "1":
-            n = response.meta['n'] + 1
-        else:
-            n = 2
-        yield Request(
-            "https://api.bilibili.com/x/web-interface/card?mid=" + str(n),
-            meta={'n': n},
-            callback=self.parse)
+            for i in range(0, ITEM_NUMBER):
+                item = UserItem()
+                item['tagName'] = tagName[i]
+                item['datetime'] = datetime
+                yield item

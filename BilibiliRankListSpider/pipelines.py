@@ -136,6 +136,26 @@ class TagPipeLine(object):
             logging.error(error)
         return item
 
+class TagPipeLine_2(object):
+    def __init__(self):
+
+        # 连接数据库
+        self.connect = connect_db()
+        self.cursor = self.connect.cursor()
+
+    def process_item(self, item, spider):
+        try:
+            # 插入数据
+            self.cursor.execute(
+                """insert into tag_2(tag_name,`datetime`,`aid`)value (%s,%s,%s)""",
+                (item['tagName'], item['datetime'],item['aid']))
+            # 提交sql语句
+            self.connect.commit()
+        except Exception as error:
+            # 出现错误时打印错误日志
+            logging.error(error)
+        return item
+
 class TagMongoPipeLine(object):
     def __init__(self):
 
