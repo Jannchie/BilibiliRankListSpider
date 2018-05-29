@@ -13,6 +13,9 @@ import configparser
 # 自己创建的database配置文件，其中包含数据库链接信息。
 import logging
 
+# 使用mongoDB
+from pymongo import MongoClient
+
 
 # 单位换算，化为K（千）。
 def unit_convert(item):
@@ -47,6 +50,8 @@ class BilibiliranklistspiderPipeline(object):
         self.connect = connect_db()
         self.cursor = self.connect.cursor()
 
+
+        
     def process_item(self, item, spider):
 
         unit_convert(item)
@@ -130,3 +135,19 @@ class TagPipeLine(object):
             # 出现错误时打印错误日志
             logging.error(error)
         return item
+
+class TagMongoPipeLine(object):
+    def __init__(self):
+
+        # 链接mongoDB
+        self.client = MongoClient('localhost', 27017)
+
+        # 数据库登录需要帐号密码的话
+        # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
+        self.db = self.client['bili_data']  # 获得数据库的句柄
+        self.coll = self.db['tag']  # 获得collection的句柄
+        
+    def process_item(self, item, spider):
+        postItem = dict(item)  # 把item转化成字典形式
+        self.coll.insert(postItem)  # 向数据库插入一条记录
+        return item  # 会在控制台输出原item数据，可以选择不写

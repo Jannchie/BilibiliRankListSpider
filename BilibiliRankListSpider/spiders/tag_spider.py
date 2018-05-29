@@ -13,14 +13,15 @@ class TagSpider(scrapy.spiders.Spider):
     start_urls = [
     ]
     # 23000000 max
-    for i in range(4000000, 6000000):
-        start_urls.append("https://www.bilibili.com/video/av" + str(i))
-    
+    i = (x+1 for x in range(30000000))
 
-    custom_settings = {'ITEM_PIPELINES': {'BilibiliRankListSpider.pipelines.TagPipeLine': 300}}
+    start_urls.append("https://www.bilibili.com/video/av" + str(next(i)))
+    
+    custom_settings = {'ITEM_PIPELINES': {}}
     #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def parse(self, response):
-
+        for each in range(2):
+            yield Request("https://www.bilibili.com/video/av" + str(next(self.i)))
         tagName = response.xpath("//li[@class='tag']/a/text()").extract()
         if tagName != []:
             ITEM_NUMBER = len(tagName)

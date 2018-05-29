@@ -22,3 +22,11 @@ db.conf
 
 /data
 ip.py
+crawls/tagSpider-1/spider.state
+crawls/tagSpider-1/requests.seen
+crawls/tagSpiderCrawl-1/requests.seen
+crawls/tagSpiderCrawl-1/spider.state
+crawls/tagSpiderCrawl-1/requests.queue/p0
+crawls/tagSpiderCrawl-1/requests.queue/p-1
+crawls/tagSpiderCrawl-1/requests.queue/p1
+crawls/tagSpiderCrawl-1/requests.queue/active.json

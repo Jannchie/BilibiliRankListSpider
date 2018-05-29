@@ -34,3 +34,5 @@ class VideoItem(scrapy.Item):
 class BiliTagItem(scrapy.Item):
     tagName = scrapy.Field()
     datetime = scrapy.Field()
+    aid = scrapy.Field()
+    channel = scrapy.Field()
