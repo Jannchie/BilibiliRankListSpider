@@ -21,16 +21,21 @@ class TagSpiderCrawl(CrawlSpider):
         }
     }
 
+    # state = {}
+    # state['pages_count'] = state.get('pages_count', 0) + 1
+    # i = (x+1 for x in range(state.get('pages_count', 0) + 1,99999999))
 
 
     rules = [
-        Rule(LinkExtractor(allow=(r'https://www.bilibili.com/video/av[0-9]*')),callback="item_parse",follow=True) ,
-        Rule(LinkExtractor(allow=(r'https://space.bilibili.com/')),callback="item_parse",follow=True) 
+        Rule(LinkExtractor(allow=(r'https://www.bilibili.com/video/av[0-9]*')),callback="item_parse",follow=True)
     ]
 
 
     def item_parse(self, response):
-        
+
+        # self.state['pages_count'] = self.state.get('pages_count', 0) + 1
+        # i = (x+1 for x in range(self.state.get('pages_count', 0) + 1,99999999))
+
         aid = str(response.url.lstrip('https://www.bilibili.com/video/av').rstrip('/'))
         tagName = response.xpath("//li[@class='tag']/a/text()").extract()
         if tagName != []:
@@ -44,3 +49,4 @@ class TagSpiderCrawl(CrawlSpider):
                 item['datetime'] = datetime
                 item['aid'] = aid
                 yield item
+# scrapy crawl tagSpiderCrawl -s JOBDIR=tagSpiderCrawl-job

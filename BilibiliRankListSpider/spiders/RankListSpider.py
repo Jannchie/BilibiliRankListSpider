@@ -18,10 +18,6 @@ class RankListSpider(scrapy.spiders.Spider):
 
     def parse(self, response):
 
-        # 文件名设为当日日期
-        filename = time.strftime("%Y-%m-%d")
-        with open('./temp/' + filename, 'wb') as f:
-            f.write(response.body)
 
         selector = response.xpath("//div[@class='content']")
         ITEM_NUMBER = len(selector)
@@ -35,9 +31,7 @@ class RankListSpider(scrapy.spiders.Spider):
         ).extract()
         pts = selector.xpath("//div[@class='pts']/div/text()").extract()
         href = selector.xpath("//a[@class='title']/@href").extract()
-        play = selector.xpath(
-            "//span[@class='data-box']//i[@class='b-icon play']/parent::node()/text()"
-        ).extract()
+
 
         # 数据装箱
         for i in range(0, ITEM_NUMBER):
@@ -45,7 +39,7 @@ class RankListSpider(scrapy.spiders.Spider):
             item['title'] = title[i]
             item['author'] = author[i]
             item['barrage'] = barrage[i]
-            item['play'] = play[i]
+            item['play'] = "0"
             item['pts'] = pts[i]
             item['href'] = href[i]
 
