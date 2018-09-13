@@ -17,7 +17,7 @@ class TagSpider(scrapy.spiders.Spider):
 
     start_urls.append("https://www.bilibili.com/video/av" + str(next(i)))
     
-    custom_settings = {'ITEM_PIPELINES': {}}
+    custom_settings = {'ITEM_PIPELINES': {'BilibiliRankListSpider.pipelines.TagPipeLine_2':300}}
     #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def parse(self, response):
         for each in range(2):
@@ -26,10 +26,11 @@ class TagSpider(scrapy.spiders.Spider):
         if tagName != []:
             ITEM_NUMBER = len(tagName)
             datetime = response.xpath("//time/text()").extract()[0]
-
+            aid = str(response.url.lstrip('https://www.bilibili.com/video/av').rstrip('/'))
         # 数据装箱
             for i in range(0, ITEM_NUMBER):
                 item = BiliTagItem()
                 item['tagName'] = tagName[i]
                 item['datetime'] = datetime
+                item['aid'] = aid
                 yield item

@@ -35,6 +35,6 @@ class BangumiSpider(scrapy.spiders.Spider):
             item = BilibiliranklistspiderItem()
             item['title'] = title[i]
             item['barrage'] = barrage[i]
-            item['play'] = play[i]
+            # item['play'] = play[i]
             item['pts'] = pts[i]
             yield item

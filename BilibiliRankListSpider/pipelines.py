@@ -23,10 +23,11 @@ def unit_convert(item):
         item['barrage'] = float(item['barrage'][:-1]) * 10
     else:
         item['barrage'] = float(item['barrage']) / 1000
-    if item['play'][-1] == u'万':
-        item['play'] = float(item['play'][:-1]) * 10
-    else:
-        item['play'] = float(item['play']) / 1000
+    
+    #if item['play'][-1] == u'万':
+    #    item['play'] = float(item['play'][:-1]) * 10
+    #else:
+    #    item['play'] = float(item['play']) / 1000
 
 
 def connect_db():
@@ -59,7 +60,7 @@ class BilibiliranklistspiderPipeline(object):
             # 插入数据
             self.cursor.execute(
                 """insert into bilibili_rank_list(title, author, bilibili_rank_list.barrage,play, pts ,href, bilibili_rank_list.partition,bilibili_rank_list.subPartition,author_fans,author_submissions)value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (item['title'], item['author'], item['barrage'], item['play'],
+                (item['title'], item['author'], item['barrage'],0,
                  item['pts'], item['href'], item['partition'],
                  item['subPartition'], item['fans'], item['submissions']))
             # 提交sql语句
@@ -84,7 +85,7 @@ class DailyRankListPipeLine(object):
             # 插入数据
             self.cursor.execute(
                 """insert into bilibili_rank_list_daily(title, author, bilibili_rank_list_daily.barrage,play, pts ,href, bilibili_rank_list_daily.partition,bilibili_rank_list_daily.subPartition,author_fans,author_submissions)value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (item['title'], item['author'], item['barrage'], item['play'],
+                (item['title'], item['author'], item['barrage'], 0,
                  item['pts'], item['href'], item['partition'],
                  item['subPartition'], item['fans'], item['submissions']))
             # 提交sql语句
@@ -107,7 +108,7 @@ class BangumiPipeLine(object):
             # 插入数据
             self.cursor.execute(
                 """insert into bangumi(title,barrage,play, pts,`date`)value (%s,%s,%s,%s,%s)""",
-                (item['title'], item['barrage'], item['play'], item['pts'],
+                (item['title'], item['barrage'], 0, item['pts'],
                  time.strftime('%Y-%m-%d', time.localtime(time.time()))))
             # 提交sql语句
             self.connect.commit()

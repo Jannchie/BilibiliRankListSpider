@@ -45,7 +45,7 @@ class RankListSpider(scrapy.spiders.Spider):
             item['title'] = title[i]
             item['author'] = author[i]
             item['barrage'] = barrage[i]
-            item['play'] = play[i]
+            # item['play'] = play[i]
             item['pts'] = pts[i]
             item['href'] = href[i]
 
