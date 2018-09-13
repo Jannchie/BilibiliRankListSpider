@@ -30,3 +30,8 @@ crawls/tagSpiderCrawl-1/requests.queue/p0
 crawls/tagSpiderCrawl-1/requests.queue/p-1
 crawls/tagSpiderCrawl-1/requests.queue/p1
 crawls/tagSpiderCrawl-1/requests.queue/active.json
+tag/requests.seen
+BilibiliRankListSpider/date.js
+BilibiliRankListSpider/date1.js
+tag/spider.state
+tag/requests.queue/active.json

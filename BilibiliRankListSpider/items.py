@@ -36,3 +36,18 @@ class BiliTagItem(scrapy.Item):
     datetime = scrapy.Field()
     aid = scrapy.Field()
     channel = scrapy.Field()
+    subChannel = scrapy.Field()
+    tag = scrapy.Field()
+
+class extraItem(scrapy.Item):
+    aid = scrapy.Field()
+    datetime = scrapy.Field()
+    author = scrapy.Field()
+    view = scrapy.Field()
+    favorite = scrapy.Field()
+    coin = scrapy.Field()
+    share = scrapy.Field()
+    like = scrapy.Field()
+    dislike = scrapy.Field()
+    subChannel = scrapy.Field()
+    title = scrapy.Field()

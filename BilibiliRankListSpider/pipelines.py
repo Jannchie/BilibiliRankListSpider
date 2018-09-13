@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import json
-import time
+import datetime
 import pymysql
 import configparser
 
@@ -51,8 +51,6 @@ class BilibiliranklistspiderPipeline(object):
         self.connect = connect_db()
         self.cursor = self.connect.cursor()
 
-
-        
     def process_item(self, item, spider):
 
         unit_convert(item)
@@ -117,6 +115,7 @@ class BangumiPipeLine(object):
             logging.error(error)
         return item
 
+
 class TagPipeLine(object):
     def __init__(self):
 
@@ -128,7 +127,7 @@ class TagPipeLine(object):
         try:
             # 插入数据
             self.cursor.execute(
-                """insert into tag(tag_name,`datetime`)value (%s,%s)""",
+                """insert into tag_data(tag_name,`datetime`)value (%s,%s)""",
                 (item['tagName'], item['datetime']))
             # 提交sql语句
             self.connect.commit()
@@ -136,6 +135,7 @@ class TagPipeLine(object):
             # 出现错误时打印错误日志
             logging.error(error)
         return item
+
 
 class TagPipeLine_2(object):
     def __init__(self):
@@ -149,7 +149,7 @@ class TagPipeLine_2(object):
             # 插入数据
             self.cursor.execute(
                 """insert into tag_2(tag_name,`datetime`,`aid`)value (%s,%s,%s)""",
-                (item['tagName'], item['datetime'],item['aid']))
+                (item['tagName'], item['datetime'], item['aid']))
             # 提交sql语句
             self.connect.commit()
         except Exception as error:
@@ -157,18 +157,84 @@ class TagPipeLine_2(object):
             logging.error(error)
         return item
 
+
 class TagMongoPipeLine(object):
     def __init__(self):
-
         # 链接mongoDB
         self.client = MongoClient('localhost', 27017)
 
         # 数据库登录需要帐号密码的话
         # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
         self.db = self.client['bili_data']  # 获得数据库的句柄
-        self.coll = self.db['tag']  # 获得collection的句柄
-        
+        self.coll = self.db['tag_data']  # 获得collection的句柄
+
     def process_item(self, item, spider):
-        postItem = dict(item)  # 把item转化成字典形式
-        self.coll.insert(postItem)  # 向数据库插入一条记录
-        return item  # 会在控制台输出原item数据，可以选择不写
+        try:
+            postItem = dict(item)  # 把item转化成字典形式
+            self.coll.insert(postItem)  # 向数据库插入一条记录
+            return item  # 会在控制台输出原item数据，可以选择不写
+        except Exception as error:
+            # 出现错误时打印错误日志
+            logging.error(error)
+        return item
+
+
+class TagMongoPipeLine_2(object):
+    def __init__(self):
+        # 链接mongoDB
+        self.client = MongoClient('localhost', 27017)
+
+        # 数据库登录需要帐号密码的话
+        # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
+        self.db = self.client['bili_data']  # 获得数据库的句柄
+        self.coll = self.db['video']  # 获得collection的句柄
+
+    def process_item(self, item, spider):
+        try:
+            postItem = dict(item)  # 把item转化成字典形式
+            self.coll.insert(postItem)  # 向数据库插入一条记录
+            return item  # 会在控制台输出原item数据，可以选择不写
+        except Exception as error:
+            # 出现错误时打印错误日志
+            logging.error(error)
+
+
+class TagMongoPipeLine_3(object):
+    def __init__(self):
+        # 链接mongoDB
+        self.client = MongoClient('localhost', 27017)
+
+        # 数据库登录需要帐号密码的话
+        # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
+        self.db = self.client['bili_data']  # 获得数据库的句柄
+        self.coll = self.db['video']  # 获得collection的句柄
+
+    def process_item(self, item, spider):
+        try:
+            if self.coll.find_one({'aid':int(item["aid"])}) is None:
+                self.coll.insert(dict(item))
+                logging.info('添加了aid：'+str(item["aid"]))
+                
+            else:
+                self.coll.update({
+                    "aid": int(item["aid"])
+                }, {"$set": {
+                    "author": item['author'],
+                    "subChannel": item['subChannel'],
+                    "view": int(item['view']),
+                    "favorite": int(item['favorite']),
+                    "coin": int(item['coin']),
+                    "share": int(item['share']),
+                    "like": int(item['like']),
+                    "dislike": int(item['dislike']),
+                    "title": item['title'],
+                    "datetime": datetime.datetime.fromtimestamp(item['datetime'])
+                }})
+
+            return item  # 会在控制台输出原item数据，可以选择不写
+        except Exception as error:
+            # 出现错误时打印错误日志
+            logging.error(error)
+
+
+# scrapy crawl tagSpider -s JOBDIR=tag-job -L INFO
