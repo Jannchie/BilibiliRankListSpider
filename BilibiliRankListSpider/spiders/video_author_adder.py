@@ -24,21 +24,21 @@ class HighSpeedVideoSpider(scrapy.spiders.Spider):
     start_aid = 0
     lenth = 99999999
 
-    # def __init__(self, start_aid=0, lenth=99999999, *args, **kwargs):
-    # super(VideoTagSpider, self).__init__(*args, **kwargs)
-    # self.start_aid = int(start_aid)
-    # self.lenth = int(lenth)
-    # print("开始的av号为:" + start_aid + ",计划抓取的视频个数为：" + lenth)
-    #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
-    # 链接mongoDB
-    client = MongoClient('localhost', 27017)
+    def __init__(self, *args, **kwargs):
+        # super(VideoTagSpider, self).__init__(*args, **kwargs)
+        # self.start_aid = int(start_aid)
+        # self.lenth = int(lenth)
+        # print("开始的av号为:" + start_aid + ",计划抓取的视频个数为：" + lenth)
+        #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
+        # 链接mongoDB
+        client = MongoClient('localhost', 27017)
 
-    # 数据库登录需要帐号密码的话
-    # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
-    db = client['bili_data']  # 获得数据库的句柄
-    coll = db['video']  # 获得collection的句柄
-    d = coll.find({'datetime':None})
-    print("等待添加日期的数量："+str(d.count()))
+        # 数据库登录需要帐号密码的话
+        # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
+        db = client['bili_data']  # 获得数据库的句柄
+        coll = db['video']  # 获得collection的句柄
+        d = coll.find({'datetime':None})
+        print("等待添加日期的数量："+str(d.count()))
 
     def start_requests(self):
         # while self.d != None:
