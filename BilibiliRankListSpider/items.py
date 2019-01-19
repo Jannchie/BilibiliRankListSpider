@@ -40,6 +40,7 @@ class BiliTagItem(scrapy.Item):
     tag = scrapy.Field()
 
 class extraItem(scrapy.Item):
+    channel = scrapy.Field()
     aid = scrapy.Field()
     datetime = scrapy.Field()
     author = scrapy.Field()
@@ -48,6 +49,23 @@ class extraItem(scrapy.Item):
     coin = scrapy.Field()
     share = scrapy.Field()
     like = scrapy.Field()
+    danmaku = scrapy.Field()
     dislike = scrapy.Field()
     subChannel = scrapy.Field()
     title = scrapy.Field()
+
+class XiaoheiwuItem(scrapy.Item):
+    punishTitle = scrapy.Field()
+    punishTypeName = scrapy.Field()
+    punishTime = scrapy.Field()
+    reasonTypeName = scrapy.Field()
+    uid = scrapy.Field()
+    uname = scrapy.Field()
+    originTypeName = scrapy.Field()
+    originUrl = scrapy.Field()
+    pid = scrapy.Field()
+    blockedType = scrapy.Field()
+    blockedDays = scrapy.Field()
+
+class MysqlItem(scrapy.Item):
+    data = scrapy.Field()

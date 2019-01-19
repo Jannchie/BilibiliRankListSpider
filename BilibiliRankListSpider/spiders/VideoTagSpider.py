@@ -5,8 +5,8 @@ from BilibiliRankListSpider.items import BiliTagItem
 import time
 import json
 import logging
-from dateutil import parser
 from pymongo import MongoClient
+from dateutil import parser
 
 
 class VideoTagSpider(scrapy.spiders.Spider):
@@ -21,7 +21,7 @@ class VideoTagSpider(scrapy.spiders.Spider):
         }
     }
 
-    start_aid = 0
+    start_aid = 1
     lenth = 99999999
 
     # 链接mongoDB
@@ -32,18 +32,16 @@ class VideoTagSpider(scrapy.spiders.Spider):
     db = client['bili_data']  # 获得数据库的句柄
     coll = db['video']  # 获得collection的句柄
 
-    def __init__(self, start_aid=29200000, lenth=99999999, *args, **kwargs):
+    def __init__(self, start_aid=1, lenth=99999999, *args, **kwargs):
         super(VideoTagSpider, self).__init__(*args, **kwargs)
         self.start_aid = int(start_aid)
         self.lenth = int(lenth)
-        print("开始的av号为:" + str(start_aid) + ",计划抓取的视频个数为：" + str(lenth))
 
     #'BilibiliRankListSpider.pipelines.TagPipeLine': 300
     def start_requests(self):
-        i = (x + 1 for x in range(self.start_aid, self.start_aid + self.lenth))
-        for each in i:
-            if self.coll.find_one({'aid': each}) is None:
-                yield Request("https://www.bilibili.com/video/av" + str(each))
+        c = self.coll.find({"aid":{"$gt":34536349},"tag": { "$exists": False }},no_cursor_timeout=True).batch_size(500)
+        for each in c:
+            yield Request("https://www.bilibili.com/video/av" + str(each['aid']))
 
     def parse(self, response):
         try:
@@ -52,7 +50,6 @@ class VideoTagSpider(scrapy.spiders.Spider):
                 .rstrip('/'))
             tagName = response.xpath("//li[@class='tag']/a/text()").extract()
             datetime = response.xpath("//time/text()").extract()
-
             if datetime != []:
                 item = BiliTagItem()
                 item['aid'] = int(aid)
@@ -62,9 +59,7 @@ class VideoTagSpider(scrapy.spiders.Spider):
                     item['channel'] = channel[0]
                 if subChannel != []:
                     item['subChannel'] = subChannel[0]
-
                 item['datetime'] = parser.parse(datetime[0])
-
                 item['tag'] = []
                 if tagName != []:
                     ITEM_NUMBER = len(tagName)

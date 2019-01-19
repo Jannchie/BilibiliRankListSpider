@@ -5,7 +5,6 @@ from BilibiliRankListSpider.items import extraItem
 import time
 import json
 import logging
-from dateutil import parser
 from pymongo import MongoClient
 
 
@@ -23,7 +22,6 @@ class HighSpeedVideoSpider(scrapy.spiders.Spider):
 
     start_aid = 0
     lenth = 99999999
-
     def __init__(self, *args, **kwargs):
         # super(VideoTagSpider, self).__init__(*args, **kwargs)
         # self.start_aid = int(start_aid)
@@ -37,24 +35,18 @@ class HighSpeedVideoSpider(scrapy.spiders.Spider):
         # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
         db = client['bili_data']  # 获得数据库的句柄
         coll = db['video']  # 获得collection的句柄
-        d = coll.find({'datetime':None})
-        print("等待添加日期的数量："+str(d.count()))
+        self.d = coll.find({'author':None})
+        print("等待添加的数量："+str(self.d.count()))
 
     def start_requests(self):
-        # while self.d != None:
-        #     aid_str = ''
-        #     i = 0
-        #     for each in self.d:
-        #         i += 1
-        #         aid_str += str(each['aid']) + ","
-        #         if i == 99:
-        #             break
-
-        i = (x for x in range(20000000, 999999999))
-        while True:
+        while self.d != None:
             aid_str = ''
-            for j in range(99):
-                aid_str += str(next(i))+','
+            i = 0
+            for each in self.d:
+                i += 1
+                aid_str += str(each['aid']) + ","
+                if i == 99:
+                    break
             yield Request("https://api.bilibili.com/x/article/archives?ids=" + aid_str.rstrip(','))
 
     def parse(self, response):
@@ -91,8 +83,8 @@ class HighSpeedVideoSpider(scrapy.spiders.Spider):
 
         except Exception as error:
             # 出现错误时打印错误日志
-            print("在解析时出错")
-            print(r)
+            if r['code'] == -404:
+                return
             print(response.url)
             logging.error(error)
 

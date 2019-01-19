@@ -5,7 +5,6 @@ from BilibiliRankListSpider.items import extraItem
 import time
 import json
 import logging
-from dateutil import parser
 from pymongo import MongoClient
 
 
