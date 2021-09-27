@@ -27,5 +27,5 @@ service-identity==17.0.0
 six==1.11.0
 Twisted==17.9.0
 w3lib==1.19.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 zope.interface==4.5.0
